@@ -15,14 +15,15 @@ def read_scores():
     pairs = data.split("\n")
     scores: list[tuple[str, str]] = []
     for pair in pairs:
-        name, score = pair.split(":")
-        scores.append((name, score))
+        if pair:
+            name, score = pair.split(":")
+            scores.append((name, score))
     return scores
 
 
 def scores_to_rendertext(scores: list[tuple[str, str]]):
     text_scores: list[Text] = []
-    scores.sort(key=lambda x: x[1])
+    scores.sort(key=lambda x: int(x[1]), reverse=True)
     for n, pair in enumerate(scores):
         name, score = pair
         box = Text(
@@ -113,8 +114,7 @@ class Player:
         self.score_text.draw(screen)
 
     def save_score(self):
-        with open("scores.txt", "w,r") as scores_file:
-            scores_file.
+        with open("scores.txt", "a") as scores_file:
             scores_file.write(f"{self.name}:{self.score}\n")
 
 
